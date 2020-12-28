@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Bank Messenger</title>
+    </head>
+
+
+    <body>
+		<h1>Your account</h1>
+
+        <table>
+		<tr>
+		<th style="text-align:left">Username: <td>{{user.username}} 
+		<tr>
+		<th style="text-align:left">Balance:  <td>{{user.account.balance}}
+		</table>
+
+
+        <form action='logout/' method="POST">
+			{% csrf_token %}
+            <input type="submit" value="Logout"/>
+        </form>
+		
+        <h2>Transfer money</h2>
+
+        <form id='transfer' action='transfer/' method="GET">            
+            <span>To:</span><br/>
+            <select name="to">
+			{% for account in accounts %}
+                <option value="{{account.user.username}}">{{account.user.username}}</option>                
+            {% endfor %}
+            <input type="hidden" name="user_id" value="{{user.username}}">
+            </select><br/>
+
+            <span>Amount:</span><br/>
+            <input type="number" name="amount"/><br/>
+            <span>Message:</span><br/>            
+			<textarea name="content" cols="40" rows="5"></textarea><br/>
+            <input type="submit" value="Transfer"/>
+        </form>
+
+        <h2>Transfers</h2>
+
+		{% for msg in msgs %}
+
+		<i>From {{msg.source.username}} to {{msg.target.username}} amount {{msg.amount}}</i></br>
+		{{msg.content|safe}}
+		</br>
+		</br>
+
+		{% endfor %}
+
+    </body>
+
+
+    </body>
+</html>
